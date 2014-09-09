@@ -3,7 +3,7 @@ require 'nokogiri'
 class ExciteBlogClient
   SLEEP_SEC = 0.5
   BASE_URL = 'http://lapin418.exblog.jp/'
-  LATEST_ID   = '20041527'
+  LATEST_ID = '20041527'
   OLDEST_ID = '11904220'
 
   def read_all
@@ -32,14 +32,14 @@ class ExciteBlogClient
     node = doc.xpath('//div[@id="post"]').first
 
     title = node.xpath('//h2[@class="subj"]').text
-    post_date_text = node.xpath('//div[@class="postdate"]').text
     content_html = node.xpath('//p').first.inner_html
     old_page_url = doc.xpath('//a[@class="older_page"]').first.try(:[], 'href')
-
-    post_date = post_date_text.scan(/(\d+)年 (\d+)月 (\d+)日/).join('-').to_date
     old_page_id = old_page_url[/\d{8}/] if old_page_url.present?
 
-    [BlogPost.new(title: title, post_date: post_date, excite_id: excite_id, content: content_html), old_page_id]
+    tail_node = doc.xpath('//div[@class="posttail"]').first
+    posted_at = tail_node.text[/\d+-\d+-\d+ \d+:\d+/]
+
+    [BlogPost.new(title: title, posted_at: posted_at, excite_id: excite_id, content: content_html), old_page_id]
   end
 
   def logger
