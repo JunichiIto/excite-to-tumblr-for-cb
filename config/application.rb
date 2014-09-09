@@ -18,6 +18,7 @@ module ExciteToTumblrForCb
                        request_specs: false
       g.assets false
       g.helper false
+      g.jbuilder false
       g.javascripts false
       g.stylesheets false
       g.fixture_replacement :factory_girl, dir: "spec/factories"
