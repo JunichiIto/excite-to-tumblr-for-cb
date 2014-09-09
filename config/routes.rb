@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
   resources :blog_posts
 
-  root to: 'visitors#index'
+  root to: 'blog_posts#index'
 end
