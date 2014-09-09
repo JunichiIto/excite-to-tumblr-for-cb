@@ -2,7 +2,7 @@ class BlogPostsController < ApplicationController
   before_action :set_blog_post, only: [:show, :edit, :update, :destroy]
 
   def index
-    @blog_posts = BlogPost.all
+    @blog_posts = BlogPost.order(:post_date).reverse_order.page params[:page]
   end
 
   def show
