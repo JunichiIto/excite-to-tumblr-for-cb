@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140909220008) do
+ActiveRecord::Schema.define(version: 20140909231845) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,9 +23,11 @@ ActiveRecord::Schema.define(version: 20140909220008) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "excite_id"
+    t.datetime "posted_at"
   end
 
   add_index "blog_posts", ["excite_id"], name: "index_blog_posts_on_excite_id", unique: true, using: :btree
   add_index "blog_posts", ["post_date"], name: "index_blog_posts_on_post_date", using: :btree
+  add_index "blog_posts", ["posted_at"], name: "index_blog_posts_on_posted_at", using: :btree
 
 end

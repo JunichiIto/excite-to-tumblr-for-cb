@@ -21,7 +21,6 @@ class BlogPostsController < ApplicationController
     respond_to do |format|
       if @blog_post.save
         format.html { redirect_to @blog_post, notice: 'Blog post was successfully created.' }
-        format.json { render :show, status: :created, location: @blog_post }
       else
         format.html { render :new }
       end
@@ -51,6 +50,6 @@ class BlogPostsController < ApplicationController
     end
 
     def blog_post_params
-      params.require(:blog_post).permit(:title, :post_date, :content)
+      params.require(:blog_post).permit(:title, :posted_at, :content)
     end
 end

@@ -7,7 +7,7 @@ table.table
   thead
     tr
       th Title
-      th Post date
+      th Posted at
       th Excite id
       th
       th
@@ -17,7 +17,7 @@ table.table
     - @blog_posts.each do |blog_post|
       tr
         td = blog_post.title
-        td = blog_post.post_date
+        td = l blog_post.posted_at
         td = blog_post.excite_id
         td = link_to 'Show', blog_post
         td = link_to 'Edit', edit_blog_post_path(blog_post)
