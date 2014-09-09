@@ -12,6 +12,9 @@ p
 p
   strong Content:
   = @blog_post.content
+p
+  strong Tag list:
+  = @blog_post.tag_list
 
 = link_to 'Edit', edit_blog_post_path(@blog_post)
 '|

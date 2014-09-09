@@ -2,7 +2,7 @@ class BlogPostsController < ApplicationController
   before_action :set_blog_post, only: [:show, :edit, :update, :destroy]
 
   def index
-    @blog_posts = BlogPost.order(:post_date).reverse_order.page params[:page]
+    @blog_posts = BlogPost.order(:posted_at).reverse_order.page params[:page]
   end
 
   def show
@@ -50,6 +50,6 @@ class BlogPostsController < ApplicationController
     end
 
     def blog_post_params
-      params.require(:blog_post).permit(:title, :posted_at, :content)
+      params.require(:blog_post).permit(:title, :posted_at, :content, :tag_list)
     end
 end
