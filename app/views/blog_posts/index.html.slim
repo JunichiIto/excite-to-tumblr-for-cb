@@ -5,7 +5,7 @@ table
     tr
       th Title
       th Post date
-      th Content
+      th Excite id
       th
       th
       th
@@ -15,7 +15,7 @@ table
       tr
         td = blog_post.title
         td = blog_post.post_date
-        td = blog_post.content
+        td = blog_post.excite_id
         td = link_to 'Show', blog_post
         td = link_to 'Edit', edit_blog_post_path(blog_post)
         td = link_to 'Destroy', blog_post, data: {:confirm => 'Are you sure?'}, :method => :delete
