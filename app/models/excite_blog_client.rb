@@ -26,9 +26,9 @@ class ExciteBlogClient
       charset = f.charset
       f.read
     end
+    doc = Nokogiri::HTML.parse(html, nil, charset)
     sleep SLEEP_SEC
 
-    doc = Nokogiri::HTML.parse(html, nil, charset)
     node = doc.xpath('//div[@id="post"]').first
 
     title = node.xpath('//h2[@class="subj"]').text
@@ -39,7 +39,12 @@ class ExciteBlogClient
     tail_node = doc.xpath('//div[@class="posttail"]').first
     posted_at = tail_node.text[/\d+-\d+-\d+ \d+:\d+/]
 
-    [BlogPost.new(title: title, posted_at: posted_at, excite_id: excite_id, content: content_html), old_page_id]
+    tag_nodes = tail_node.search('a').select do |node|
+      node['href'] =~ /\/i\d+\//
+    end
+    tag_list = tag_nodes.map(&:text).join(',')
+
+    [BlogPost.new(title: title, posted_at: posted_at, excite_id: excite_id, content: content_html, tag_list: tag_list), old_page_id]
   end
 
   def logger
