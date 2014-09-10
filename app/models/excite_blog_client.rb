@@ -8,7 +8,7 @@ class ExciteBlogClient
 
   def read_all(latest_id: LATEST_ID, oldest_id: OLDEST_ID)
     latest_id ||= LATEST_ID
-    oldest_id ||=OLDEST_ID
+    oldest_id ||= OLDEST_ID
 
     target_id = latest_id
     posts = []
