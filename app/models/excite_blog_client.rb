@@ -45,6 +45,10 @@ class ExciteBlogClient
     return start_comment.parent.inner_html if start_comment.parent.inner_html =~ /interest_match_relevant_zone_end/
 
     # タグ構造がおかしい場合に対処する
+    html_in_start_comment = ''
+    if start_comment.parent.text.strip.present?
+      html_in_start_comment = start_comment.parent.inner_html
+    end
     content = Nokogiri::XML::NodeSet.new(doc)
     contained_node = start_comment.parent.next_sibling
     loop do
@@ -52,7 +56,7 @@ class ExciteBlogClient
       content << contained_node
       contained_node = contained_node.next_sibling
     end
-    content.to_html
+    html_in_start_comment + content.to_html
   end
 
   def read_doc_from_url(url)

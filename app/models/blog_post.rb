@@ -9,4 +9,8 @@ class BlogPost < ActiveRecord::Base
       raise ActiveRecord::Rollback if dry_run
     end
   end
+
+  def excite_url
+    "http://lapin418.exblog.jp/#{excite_id}/"
+  end
 end
