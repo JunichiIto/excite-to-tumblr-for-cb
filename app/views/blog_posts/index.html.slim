@@ -9,6 +9,7 @@ table.table
       th Title
       th Posted at
       th Excite id
+      th Content
       th Tag list
       th
       th
@@ -20,6 +21,7 @@ table.table
         td = blog_post.title
         td = l blog_post.posted_at
         td = blog_post.excite_id
+        td = blog_post.content.truncate(100)
         td = blog_post.tag_list
         td = link_to 'Show', blog_post
         td = link_to 'Edit', edit_blog_post_path(blog_post)
