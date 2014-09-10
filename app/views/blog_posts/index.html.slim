@@ -21,7 +21,7 @@ table.table
         td = blog_post.title
         td = l blog_post.posted_at
         td = link_to blog_post.excite_id, blog_post.excite_url, target: '_blank'
-        td = blog_post.content.truncate(10) + blog_post.content[-30..-1]
+        td = blog_post.content_only.truncate(10) + blog_post.content_only[-30..-1]
         td = blog_post.tag_list
         td = link_to 'Show', blog_post
         td = link_to 'Edit', edit_blog_post_path(blog_post)

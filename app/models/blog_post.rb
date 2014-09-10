@@ -13,4 +13,8 @@ class BlogPost < ActiveRecord::Base
   def excite_url
     "http://lapin418.exblog.jp/#{excite_id}/"
   end
+
+  def content_only
+    content.gsub(/.*<!-- interest_match_relevant_zone_start -->|<!-- interest_match_relevant_zone_end -->.*/m, '')
+  end
 end
