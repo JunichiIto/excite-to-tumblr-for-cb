@@ -17,4 +17,8 @@ class BlogPost < ActiveRecord::Base
   def content_only
     content.gsub(/.*<!-- interest_match_relevant_zone_start -->|<!-- interest_match_relevant_zone_end -->.*/m, '')
   end
+
+  def image_urls
+    content.scan(/src="(http:\/\/pds.exblog.jp\/pds\/[^"]+)"/i).flatten
+  end
 end
