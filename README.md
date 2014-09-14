@@ -18,3 +18,4 @@ NOTE: IF YOU USE THIS UTILITY, DO IT AT YOUR OWN RISK.
 1. Execute `BlogImage.post_all_images_to_tumblr` (NOTE: Max 150 images per day).
 1. Install Firefox to your machine.
 1. Execute `BlogPost.post_all_posts_to_tumblr` (NOTE: Max 250 posts per day).
+1. Execute `BlogImage.update_all_tumblr_blog_urls` (option)

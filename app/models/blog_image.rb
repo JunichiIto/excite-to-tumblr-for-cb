@@ -47,6 +47,14 @@ class BlogImage < ActiveRecord::Base
     end
   end
 
+  # 画像やキャプションをクリックした際に、ブログページへ遷移させる。
+  # ただし必須ではない。
+  def self.update_all_tumblr_blog_urls(limit: 1)
+    self.includes(:blog_posts).references(:blog_posts).where.not(blog_posts: { tumblr_id: nil }).order(:excite_url).limit(limit).each do |blog_image|
+      blog_image.update_tumblr_blog_url unless blog_image.already_link_updated?
+    end
+  end
+
   def tumblr_url
     raise "tumblr_info is blank." if tumblr_info.blank?
     tumblr_info['posts'][0]['photos'][0]['original_size']['url'].tap do |url|
@@ -87,14 +95,43 @@ class BlogImage < ActiveRecord::Base
     self.save!
   end
 
+  def update_tumblr_blog_url
+    logger.info "[INFO] Updating #{id} / #{tumblr_id}"
+
+    result = tumblr_client.edit BLOG_NAME, id: tumblr_id, caption: caption_for_tumblr, link: tumblr_text_url
+    self.tumblr_id = result['id']
+    raise "Invalid result #{result.inspect}" if tumblr_id.blank?
+    sleep SLEEP_SEC
+
+    result = tumblr_client.posts BLOG_NAME, type: 'photo', id: tumblr_id
+    self.tumblr_info = result
+    raise "Invalid result #{result.inspect}" if tumblr_info.blank?
+    sleep SLEEP_SEC
+
+    self.save!
+  end
+
+  def already_link_updated?
+    tumblr_info['posts'][0]['link_url'].present?
+  end
+
   private
+
+  def caption_for_tumblr
+    caption = "#{first_blog_post.title} (#{I18n.l photo_date})"
+    if text_url = tumblr_text_url
+      "<a href=\"#{text_url}\">#{caption}</a>"
+    else
+      caption
+    end
+  end
+
+  def tumblr_text_url
+    first_blog_post.try(:tumblr_url)
+  end
 
   def first_blog_post
     self.blog_posts.order(:posted_at).first
-  end
-
-  def caption_for_tumblr
-    "#{first_blog_post.title} (#{I18n.l photo_date})"
   end
 
   def photo_date_for_tumblr_param
