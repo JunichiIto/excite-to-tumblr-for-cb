@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140914091636) do
+ActiveRecord::Schema.define(version: 20140914183354) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,17 @@ ActiveRecord::Schema.define(version: 20140914091636) do
 
   add_index "blog_posts", ["excite_id"], name: "index_blog_posts_on_excite_id", unique: true, using: :btree
   add_index "blog_posts", ["posted_at"], name: "index_blog_posts_on_posted_at", using: :btree
+
+  create_table "post_and_images", force: true do |t|
+    t.integer  "blog_post_id"
+    t.integer  "blog_image_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "post_and_images", ["blog_image_id"], name: "index_post_and_images_on_blog_image_id", using: :btree
+  add_index "post_and_images", ["blog_post_id", "blog_image_id"], name: "index_post_and_images_on_blog_post_id_and_blog_image_id", unique: true, using: :btree
+  add_index "post_and_images", ["blog_post_id"], name: "index_post_and_images_on_blog_post_id", using: :btree
 
   create_table "taggings", force: true do |t|
     t.integer  "tag_id"
