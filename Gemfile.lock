@@ -68,6 +68,10 @@ GEM
       railties (>= 3.0.0)
     faker (1.4.3)
       i18n (~> 0.5)
+    faraday (0.9.0)
+      multipart-post (>= 1.2, < 3)
+    faraday_middleware (0.9.1)
+      faraday (>= 0.7.4, < 0.10)
     ffi (1.9.3)
     high_voltage (2.2.1)
     hike (1.2.3)
@@ -93,8 +97,10 @@ GEM
     mini_portile (0.6.0)
     minitest (5.4.1)
     multi_json (1.10.1)
+    multipart-post (2.0.0)
     nokogiri (1.6.3.1)
       mini_portile (= 0.6.0)
+    oauth (0.4.7)
     pg (0.17.1)
     polyglot (0.3.5)
     quiet_assets (1.0.3)
@@ -112,6 +118,8 @@ GEM
       bundler (>= 1.3.0, < 2.0)
       railties (= 4.1.5)
       sprockets-rails (~> 2.0)
+    rails_config (0.4.2)
+      activesupport (>= 3.0)
     rails_layout (1.0.21)
     railties (4.1.5)
       actionpack (= 4.1.5)
@@ -156,6 +164,7 @@ GEM
     simple_form (3.0.2)
       actionpack (~> 4.0)
       activemodel (~> 4.0)
+    simple_oauth (0.2.0)
     slim (2.0.3)
       temple (~> 0.6.6)
       tilt (>= 1.3.3, < 2.1)
@@ -181,6 +190,13 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
+    tumblr_client (0.8.4)
+      faraday (~> 0.9.0)
+      faraday_middleware (~> 0.9.0)
+      json
+      mime-types
+      oauth
+      simple_oauth
     turbolinks (2.3.0)
       coffee-rails
     tzinfo (1.2.2)
@@ -222,6 +238,7 @@ DEPENDENCIES
   pg
   quiet_assets
   rails (= 4.1.5)
+  rails_config
   rails_layout
   rspec-rails
   sass-rails (~> 4.0.3)
@@ -230,6 +247,7 @@ DEPENDENCIES
   simple_form
   slim-rails
   spring
+  tumblr_client
   turbolinks
   uglifier (>= 1.3.0)
   unicorn

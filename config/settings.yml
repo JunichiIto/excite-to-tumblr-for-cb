@@ -1,0 +1,5 @@
+tumblr:
+  consumer_key: '(secret)'
+  consumer_secret: '(secret)'
+  oauth_token: '(secret)'
+  oauth_token_secret: '(secret)'
