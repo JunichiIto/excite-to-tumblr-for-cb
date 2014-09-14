@@ -6,6 +6,7 @@ class BlogPost < ActiveRecord::Base
   MIGRATION_MESSAGE = 'この記事はこちらに移動しました。'
   acts_as_taggable
 
+  validates :title, :content, :posted_at, :excite_id, presence: true
   validates :tumblr_id, uniqueness: true, allow_blank: true
   serialize :tumblr_info
 
@@ -39,32 +40,13 @@ class BlogPost < ActiveRecord::Base
     raise "Invalid result #{result.inspect}" if tumblr_info.blank?
     sleep SLEEP_SEC
 
-    old_content = excite_blog_writer.edit_content(excite_id, replace_text)
+    old_content = excite_blog_writer.edit_content(excite_id, migration_text)
     self.content_in_excite = old_content
     raise 'Old content is blank!' if self.content_in_excite.blank?
 
     assert_excite_is_updated
 
     self.save!
-  end
-
-  def assert_excite_is_updated
-    html = html_in_excite_blog
-    raise "Content is not updated! #{html}" unless html =~ /#{MIGRATION_MESSAGE}/
-  end
-
-  def html_in_excite_blog
-    open(excite_url) do |f|
-      f.read
-    end
-  end
-
-  def replace_text
-    <<-HTML
-#{MIGRATION_MESSAGE}
-
-<a href="#{tumblr_url}" target="_blank">#{tumblr_url}</a>
-    HTML
   end
 
   def tumblr_url
@@ -96,6 +78,27 @@ class BlogPost < ActiveRecord::Base
     doc = remove_comments(doc)
     doc = replace_image(doc)
     doc.css('body').inner_html
+  end
+
+  private
+
+  def assert_excite_is_updated
+    html = html_in_excite_blog
+    raise "Content is not updated! #{html}" unless html =~ /#{MIGRATION_MESSAGE}/
+  end
+
+  def html_in_excite_blog
+    open(excite_url) do |f|
+      f.read
+    end
+  end
+
+  def migration_text
+    <<-HTML
+#{MIGRATION_MESSAGE}
+
+<a href="#{tumblr_url}" target="_blank">#{tumblr_url}</a>
+    HTML
   end
 
   def remove_comments(doc)
