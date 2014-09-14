@@ -5,6 +5,7 @@ tumblr:
   oauth_token: '(secret)'
   oauth_token_secret: '(secret)'
 excite:
+  account_name: 'lapin418'
   id: '(secret)'
   pass: '(secret)'
   edit_url: '(secret)'

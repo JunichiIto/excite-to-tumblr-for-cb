@@ -57,7 +57,7 @@ class BlogPost < ActiveRecord::Base
   end
 
   def excite_url
-    "http://lapin418.exblog.jp/#{excite_id}/"
+    "http://#{Settings.excite.account_name}.exblog.jp/#{excite_id}/"
   end
 
   def content_only

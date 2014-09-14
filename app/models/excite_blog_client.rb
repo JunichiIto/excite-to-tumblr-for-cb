@@ -20,7 +20,7 @@ class ExciteBlogClient
   end
 
   def read_post(excite_id)
-    url = "http://lapin418.exblog.jp/#{excite_id}/"
+    url = "http://#{Settings.excite.account_name}.exblog.jp/#{excite_id}/"
     doc = read_doc_from_url(url)
     node = doc.xpath('//div[@id="post"]').first
 
