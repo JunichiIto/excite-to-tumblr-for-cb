@@ -16,12 +16,14 @@ class BlogPost < ActiveRecord::Base
   end
 
   def self.post_all_posts_to_tumblr(limit: 1)
+    excite_blog_writer = ExciteBlogWriter.new
+    excite_blog_writer.login
     self.where(tumblr_id: nil).order(:posted_at).limit(limit).each do |blog_post|
-      blog_post.post_to_tumblr
+      blog_post.post_to_tumblr(excite_blog_writer)
     end
   end
 
-  def post_to_tumblr
+  def post_to_tumblr(excite_blog_writer)
     logger.info "[INFO] Posting #{id} / #{excite_url}"
 
     result = tumblr_client.create_post :text, BLOG_NAME, tags: tag_list, date: date_param_for_tumblr, title: title, body: content_for_tumblr
@@ -34,7 +36,27 @@ class BlogPost < ActiveRecord::Base
     raise "Invalid result #{result.inspect}" if tumblr_info.blank?
     sleep SLEEP_SEC
 
-    self.save!
+    old_content = excite_blog_writer.edit_content(excite_id, replace_text)
+    self.content_in_excite = old_content
+    raise 'Old content is blank!' if self.content_in_excite.blank?
+
+    # 更新状況の確認
+
+    # self.save!
+    logger.debug '[DEBUG] NOT SAVED.'
+  end
+
+  def replace_text
+    <<-HTML
+この記事はこちらに移動しました。
+
+<a href="#{tumblr_url}" target="_blank">#{tumblr_url}</a>
+    HTML
+  end
+
+  def tumblr_url
+    return '' if tumblr_info.blank?
+    tumblr_info['posts'][0]['post_url']
   end
 
   def excite_url

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140914192203) do
+ActiveRecord::Schema.define(version: 20140914194413) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,8 +33,9 @@ ActiveRecord::Schema.define(version: 20140914192203) do
     t.datetime "updated_at"
     t.integer  "excite_id"
     t.datetime "posted_at"
-    t.integer  "tumblr_id",   limit: 8
+    t.integer  "tumblr_id",         limit: 8
     t.text     "tumblr_info"
+    t.text     "content_in_excite"
   end
 
   add_index "blog_posts", ["excite_id"], name: "index_blog_posts_on_excite_id", unique: true, using: :btree

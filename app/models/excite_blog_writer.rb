@@ -1,9 +1,14 @@
 class ExciteBlogWriter
-  def test
-    browser = Selenium::WebDriver.for :firefox
-    browser.get "http://www.excite.co.jp/?pname=blog&brand=xcit&lin=1&targeturl=http%3A%2F%2Fwww.exblog.jp%2F"
+  attr_reader :browser, :wait
 
-    wait = Selenium::WebDriver::Wait.new(:timeout => 15)
+  def initialize
+    @browser = Selenium::WebDriver.for :firefox
+    @wait = Selenium::WebDriver::Wait.new(:timeout => 15)
+  end
+
+  def login
+    info 'Logging in...'
+    browser.get "http://www.excite.co.jp/?pname=blog&brand=xcit&lin=1&targeturl=http%3A%2F%2Fwww.exblog.jp%2F"
 
     input = wait.until {
       element = browser.find_element(:name, "acctname")
@@ -25,17 +30,31 @@ class ExciteBlogWriter
     form.find_element(:name, "_action").click
     sleep 4
 
-    browser.get "#{Settings.excite.edit_url}20178950"
+    info "Logged in."
+  end
+
+  def edit_content(excite_id, content)
+    info "Editing #{excite_id}..."
+    browser.get "#{Settings.excite.edit_url}#{excite_id}"
     input = wait.until {
       element = browser.find_element(:name, "content")
       element if element.displayed?
     }
-    content = input.text
-    info content
+    old_content = input.text
     input.clear
-    input.send_keys "TEST\nBye."
+    input.send_keys content
 
-    browser.quit
+    form = wait.until {
+      element = browser.find_element(:name, "updateform")
+      element if element.displayed?
+    }
+
+    form.find_element(:name, "submit_button").click
+    sleep 4
+
+    info "Edited."
+
+    old_content
   end
 
   def info(text)

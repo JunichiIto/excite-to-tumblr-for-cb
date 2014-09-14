@@ -50,6 +50,6 @@ class BlogPostsController < ApplicationController
     end
 
     def blog_post_params
-      params.require(:blog_post).permit(:title, :posted_at, :content, :tag_list)
+      params.require(:blog_post).permit(:title, :posted_at, :content, :tag_list, :tumblr_id, :tumblr_info, :content_in_excite)
     end
 end

@@ -10,11 +10,20 @@ p
   strong Excite id:
   = @blog_post.excite_id
 p
+  strong Tumblr id:
+  = @blog_post.tumblr_id
+p
+  strong Tumblr info:
+  = @blog_post.tumblr_info
+p
   strong Content:
   = @blog_post.content
 p
   strong Content for Tumblr:
   = @blog_post.content_for_tumblr_with_rescue
+p
+  strong Content in Excite:
+  = @blog_post.content_in_excite
 p
   strong Tag list:
   = @blog_post.tag_list
