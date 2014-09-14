@@ -10,6 +10,7 @@ class BlogPost < ActiveRecord::Base
   validates :tumblr_id, uniqueness: true, allow_blank: true
   serialize :tumblr_info
 
+  # 旧ブログの情報をデータベースに取り込む
   def self.import_all_posts(latest_id: nil, oldest_id: nil, dry_run: true)
     self.transaction do
       self.destroy_all
@@ -19,6 +20,7 @@ class BlogPost < ActiveRecord::Base
     end
   end
 
+  # データベースに登録されているBlogPostをTumblrに投稿する
   def self.post_all_posts_to_tumblr(limit: 1)
     excite_blog_writer = ExciteBlogWriter.new
     excite_blog_writer.login
