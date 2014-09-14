@@ -21,4 +21,50 @@ class BlogPost < ActiveRecord::Base
   def image_urls
     content.scan(/src="(http:\/\/pds.exblog.jp\/pds\/[^"]+)"/i).flatten
   end
+
+  def content_for_tumblr_with_rescue
+    content_for_tumblr
+  rescue => e
+    "ERROR: #{e.message}"
+  end
+
+  def content_for_tumblr
+    return '' if content.blank?
+    doc = content_as_nokogiri(content_without_unused_parts)
+    doc = remove_comments(doc)
+    doc = replace_image(doc)
+    doc.css('body').inner_html
+  end
+
+  def remove_comments(doc)
+    doc.xpath('//comment()').remove
+    doc
+  end
+
+  def replace_image(doc)
+    doc.css('a').each do |a|
+      a.css('img').each do |img|
+        src = img.attribute('src').value
+        if src =~ /http:\/\/pds.exblog.jp\/pds\/\d/
+          a.name = 'img'
+          a.attributes.each{|k, v| a.remove_attribute(k)}
+          a.set_attribute('src', new_image_url(src))
+          a.inner_html = ''
+        end
+      end
+    end
+    doc
+  end
+
+  def content_without_unused_parts
+    content.gsub(/(?:<br class="clear">)(?:<!-- interest_match_relevant_zone_end -->.*)?/m, '')
+  end
+
+  def new_image_url(old_url)
+    BlogImage.find_by_excite_url(old_url).tumblr_url
+  end
+
+  def content_as_nokogiri(content_text)
+    Nokogiri::HTML.parse(content_text)
+  end
 end

@@ -20,6 +20,13 @@ class BlogImage < ActiveRecord::Base
     end
   end
 
+  def tumblr_url
+    raise "tumblr_info is blank." if tumblr_info.blank?
+    tumblr_info['posts'][0]['photos'][0]['original_size']['url'].tap do |url|
+      raise "Tumblr URL is blank!" if url.blank?
+    end
+  end
+
   def post_to_tumblr
     logger.info "[INFO] Posting #{id} / #{excite_url}"
 

@@ -13,6 +13,9 @@ p
   strong Content:
   = @blog_post.content
 p
+  strong Content for Tumblr:
+  = @blog_post.content_for_tumblr_with_rescue
+p
   strong Tag list:
   = @blog_post.tag_list
 p
