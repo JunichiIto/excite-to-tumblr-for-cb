@@ -1,0 +1,10 @@
+= simple_form_for(@blog_image) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :excite_url
+    = f.input :tumblr_id
+    = f.input :tumblr_info
+
+  .form-actions
+    = f.button :submit

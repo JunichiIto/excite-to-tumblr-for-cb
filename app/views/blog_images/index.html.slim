@@ -1,0 +1,25 @@
+h1 Listing blog_images
+
+table
+  thead
+    tr
+      th Excite url
+      th Tumblr
+      th Tumblr info
+      th
+      th
+      th
+
+  tbody
+    - @blog_images.each do |blog_image|
+      tr
+        td = blog_image.excite_url
+        td = blog_image.tumblr_id
+        td = blog_image.tumblr_info
+        td = link_to 'Show', blog_image
+        td = link_to 'Edit', edit_blog_image_path(blog_image)
+        td = link_to 'Destroy', blog_image, data: {:confirm => 'Are you sure?'}, :method => :delete
+
+br
+
+= link_to 'New Blog image', new_blog_image_path

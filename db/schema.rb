@@ -11,10 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140909234943) do
+ActiveRecord::Schema.define(version: 20140914083523) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "blog_images", force: true do |t|
+    t.string   "excite_url"
+    t.integer  "tumblr_id"
+    t.text     "tumblr_info"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "blog_images", ["excite_url"], name: "index_blog_images_on_excite_url", unique: true, using: :btree
+  add_index "blog_images", ["tumblr_id"], name: "index_blog_images_on_tumblr_id", unique: true, using: :btree
 
   create_table "blog_posts", force: true do |t|
     t.string   "title"

@@ -1,0 +1,15 @@
+p#notice = notice
+
+p
+  strong Excite url:
+  = @blog_image.excite_url
+p
+  strong Tumblr:
+  = @blog_image.tumblr_id
+p
+  strong Tumblr info:
+  = @blog_image.tumblr_info
+
+= link_to 'Edit', edit_blog_image_path(@blog_image)
+'|
+= link_to 'Back', blog_images_path
