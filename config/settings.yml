@@ -3,3 +3,7 @@ tumblr:
   consumer_secret: '(secret)'
   oauth_token: '(secret)'
   oauth_token_secret: '(secret)'
+excite:
+  id: '(secret)'
+  pass: '(secret)'
+  edit_url: '(secret)'

@@ -21,6 +21,7 @@ gem 'nokogiri'
 gem 'acts-as-taggable-on'
 gem 'tumblr_client'
 gem 'rails_config'
+gem 'selenium-webdriver'
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_21]
