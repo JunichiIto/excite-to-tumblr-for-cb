@@ -1,6 +1,9 @@
+require 'open-uri'
+
 class BlogPost < ActiveRecord::Base
   SLEEP_SEC = 0.5
   BLOG_NAME = Settings.tumblr.blog_name
+  MIGRATION_MESSAGE = 'この記事はこちらに移動しました。'
   acts_as_taggable
 
   validates :tumblr_id, uniqueness: true, allow_blank: true
@@ -40,15 +43,25 @@ class BlogPost < ActiveRecord::Base
     self.content_in_excite = old_content
     raise 'Old content is blank!' if self.content_in_excite.blank?
 
-    # 更新状況の確認
+    assert_excite_is_updated
 
-    # self.save!
-    logger.debug '[DEBUG] NOT SAVED.'
+    self.save!
+  end
+
+  def assert_excite_is_updated
+    html = html_in_excite_blog
+    raise "Content is not updated! #{html}" unless html =~ /#{MIGRATION_MESSAGE}/
+  end
+
+  def html_in_excite_blog
+    open(excite_url) do |f|
+      f.read
+    end
   end
 
   def replace_text
     <<-HTML
-この記事はこちらに移動しました。
+#{MIGRATION_MESSAGE}
 
 <a href="#{tumblr_url}" target="_blank">#{tumblr_url}</a>
     HTML
