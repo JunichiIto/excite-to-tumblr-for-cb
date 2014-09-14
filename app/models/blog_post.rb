@@ -48,9 +48,10 @@ class BlogPost < ActiveRecord::Base
     self.content_in_excite = old_content
     raise 'Old content is blank!' if self.content_in_excite.blank?
 
-    assert_excite_is_updated
-
     self.save!
+
+    # 問題があれば停止して手動で復旧させる
+    assert_excite_is_updated
   end
 
   def tumblr_url
@@ -88,7 +89,8 @@ class BlogPost < ActiveRecord::Base
 
   def assert_excite_is_updated
     html = html_in_excite_blog
-    raise "Content is not updated! #{html}" unless html =~ /#{MIGRATION_MESSAGE}/
+    expected_date = I18n.l(posted_at, format: '%Y年 %m月 %d日')
+    raise "Content is not updated! #{html}" if !(html =~ /#{MIGRATION_MESSAGE}/ && html =~ /#{expected_date}/)
   end
 
   def html_in_excite_blog

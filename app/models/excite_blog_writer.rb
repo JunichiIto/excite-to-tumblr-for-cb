@@ -36,7 +36,7 @@ class ExciteBlogWriter
   def edit_content(excite_id, content)
     info "Editing #{excite_id}..."
     browser.get edit_url(excite_id)
-    sleep 2 # 日付のselect boxが選択されるのを待つ
+    sleep 4 # 日付のselect boxが選択されるのを待つ
 
     input = wait.until {
       element = browser.find_element(:name, "content")
