@@ -2,7 +2,7 @@ class BlogImagesController < ApplicationController
   before_action :set_blog_image, only: [:show, :edit, :update, :destroy]
 
   def index
-    @blog_images = BlogImage.all
+    @blog_images = BlogImage.order(:excite_url).reverse_order.page params[:page]
   end
 
   def show
