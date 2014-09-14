@@ -7,6 +7,7 @@ class BlogImage < ActiveRecord::Base
   validates :tumblr_id, uniqueness: true, allow_blank: true
   serialize :tumblr_info
 
+  # 旧ブログの本文に含まれる画像URLからレコードを作成する
   def self.create_blog_images
     BlogPost.all.each do |blog_post|
       blog_post.image_urls.each do |url|
@@ -17,6 +18,7 @@ class BlogImage < ActiveRecord::Base
     end
   end
 
+  # create_blog_imagesでpost_and_imagesを作らなかったので、このメソッドで後付けする
   def self.link_all_posts_and_images
     BlogPost.transaction do
       BlogPost.all.each do |blog_post|
@@ -28,12 +30,15 @@ class BlogImage < ActiveRecord::Base
     end
   end
 
+  # 登録されている画像をTumblrに投稿する
   def self.post_all_images_to_tumblr(limit: 1)
     self.where(tumblr_id: nil).order(:excite_url).limit(limit).each do |blog_image|
       blog_image.post_to_tumblr
     end
   end
 
+  # 最初のバージョンではTumblr投稿時の情報がおかしかったので、このメソッドで修正する
+  # 現在のバージョンではこのメソッドを呼び出す必要はない
   def self.fix_all_tumblr_photo_info(limit: 1)
     self.where.not(tumblr_id: nil).limit(limit).each do |blog_image|
       blog_image.fix_tumblr_photo_info
@@ -43,6 +48,7 @@ class BlogImage < ActiveRecord::Base
   def tumblr_url
     raise "tumblr_info is blank." if tumblr_info.blank?
     tumblr_info['posts'][0]['photos'][0]['original_size']['url'].tap do |url|
+      # たぶんありえないはず
       raise "Tumblr URL is blank!" if url.blank?
     end
   end
@@ -78,6 +84,8 @@ class BlogImage < ActiveRecord::Base
 
     self.save!
   end
+
+  private
 
   def first_blog_post
     self.blog_posts.order(:posted_at).first
