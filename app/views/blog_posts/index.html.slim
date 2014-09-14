@@ -3,6 +3,7 @@ h1 Listing blog_posts
 p
   = link_to 'New Blog post', new_blog_post_path
 
+= paginate @blog_posts
 table.table
   thead
     tr

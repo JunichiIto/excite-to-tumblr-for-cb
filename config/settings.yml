@@ -1,4 +1,5 @@
 tumblr:
+  blog_name: 'coupe-baguette'
   consumer_key: '(secret)'
   consumer_secret: '(secret)'
   oauth_token: '(secret)'

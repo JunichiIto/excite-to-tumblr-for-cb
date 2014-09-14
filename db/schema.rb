@@ -11,14 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140914083523) do
+ActiveRecord::Schema.define(version: 20140914091636) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "blog_images", force: true do |t|
     t.string   "excite_url"
-    t.integer  "tumblr_id"
+    t.integer  "tumblr_id",   limit: 8
     t.text     "tumblr_info"
     t.datetime "created_at"
     t.datetime "updated_at"
