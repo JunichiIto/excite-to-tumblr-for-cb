@@ -31,6 +31,8 @@ class BlogImage < ActiveRecord::Base
   end
 
   # 登録されている画像をTumblrに投稿する
+  # limit = nilであれば全件に対して実行する。
+  # ただし、Tumblr APIの仕様上、1日の最大投稿件数は150件まで
   def self.post_all_images_to_tumblr(limit: 1)
     self.where(tumblr_id: nil).order(:excite_url).limit(limit).each do |blog_image|
       blog_image.post_to_tumblr

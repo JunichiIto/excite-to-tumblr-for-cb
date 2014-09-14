@@ -35,7 +35,7 @@ class ExciteBlogWriter
 
   def edit_content(excite_id, content)
     info "Editing #{excite_id}..."
-    browser.get "#{Settings.excite.edit_url}#{excite_id}"
+    browser.get edit_url(excite_id)
     sleep 2 # 日付のselect boxが選択されるのを待つ
 
     input = wait.until {
@@ -57,6 +57,12 @@ class ExciteBlogWriter
     info "Edited."
 
     old_content
+  end
+
+  private
+
+  def edit_url(excite_id)
+    "http://www.exblog.jp/myblog/entry/edit/?eid=#{Settings.excite.eid}&srl=#{excite_id}"
   end
 
   def info(text)

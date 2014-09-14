@@ -2,9 +2,9 @@ require 'open-uri'
 require 'nokogiri'
 class ExciteBlogClient
   SLEEP_SEC = 0.5
-  BASE_URL = 'http://lapin418.exblog.jp/'
-  LATEST_ID = '20041527'
-  OLDEST_ID = '11904220'
+  BASE_URL = "http://#{Settings.excite.account_name}.exblog.jp/"
+  LATEST_ID = Settings.excite.latest_post_id
+  OLDEST_ID = Settings.excite.oldest_post_id
 
   def read_all(latest_id: LATEST_ID, oldest_id: OLDEST_ID)
     latest_id ||= LATEST_ID

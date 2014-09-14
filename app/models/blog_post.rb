@@ -21,6 +21,8 @@ class BlogPost < ActiveRecord::Base
   end
 
   # データベースに登録されているBlogPostをTumblrに投稿する
+  # limit = nilであれば全件に対して実行する。
+  # ただし、Tumblr APIの仕様上、1日の最大投稿件数は250件まで
   def self.post_all_posts_to_tumblr(limit: 1)
     excite_blog_writer = ExciteBlogWriter.new
     excite_blog_writer.login

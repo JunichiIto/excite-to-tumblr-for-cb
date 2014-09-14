@@ -8,4 +8,6 @@ excite:
   account_name: 'lapin418'
   id: '(secret)'
   pass: '(secret)'
-  edit_url: '(secret)'
+  eid: '(secret)'
+  latest_post_id: '(your post id)'
+  oldest_post_id: '(your post id)'
