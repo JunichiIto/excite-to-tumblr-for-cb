@@ -25,7 +25,6 @@ ActiveRecord::Schema.define(version: 20140914083523) do
   end
 
   add_index "blog_images", ["excite_url"], name: "index_blog_images_on_excite_url", unique: true, using: :btree
-  add_index "blog_images", ["tumblr_id"], name: "index_blog_images_on_tumblr_id", unique: true, using: :btree
 
   create_table "blog_posts", force: true do |t|
     t.string   "title"

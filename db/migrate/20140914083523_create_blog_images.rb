@@ -8,6 +8,5 @@ class CreateBlogImages < ActiveRecord::Migration
       t.timestamps
     end
     add_index :blog_images, :excite_url, unique: true
-    add_index :blog_images, :tumblr_id, unique: true
   end
 end
