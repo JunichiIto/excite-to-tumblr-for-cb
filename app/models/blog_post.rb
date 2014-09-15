@@ -34,6 +34,14 @@ class BlogPost < ActiveRecord::Base
     end
   end
 
+  # 最初のバージョンではTumblr投稿時の日付情報が0:00固定になっていたので、このメソッドで修正する
+  # 現在のバージョンではこのメソッドを呼び出す必要はない
+  def self.fix_all_tumblr_post_date(limit: 1)
+    self.where('tumblr_info LIKE ?', '%15:00:00 GMT%').limit(limit).each do |blog_post|
+      blog_post.fix_tumblr_post_date
+    end
+  end
+
   def post_to_tumblr(excite_blog_writer)
     logger.info "[INFO] Posting #{id} / #{excite_url}"
 
@@ -55,6 +63,22 @@ class BlogPost < ActiveRecord::Base
 
     # 問題があれば停止して手動で復旧させる
     assert_excite_is_updated
+  end
+
+  def fix_tumblr_post_date
+    logger.info "[INFO] Fixing #{id} / #{tumblr_id}"
+
+    result = tumblr_client.edit BLOG_NAME, id: tumblr_id, date: date_param_for_tumblr
+    self.tumblr_id = result['id']
+    raise "Invalid result #{result.inspect}" if tumblr_id.blank?
+    sleep SLEEP_SEC
+
+    result = tumblr_client.posts BLOG_NAME, type: 'text', id: tumblr_id
+    self.tumblr_info = result
+    raise "Invalid result #{result.inspect}" if tumblr_info.blank?
+    sleep SLEEP_SEC
+
+    self.save!
   end
 
   def tumblr_url
