@@ -4,6 +4,9 @@ class BlogPost < ActiveRecord::Base
   SLEEP_SEC = 0.5
   BLOG_NAME = Settings.tumblr.blog_name
   MIGRATION_MESSAGE = 'この記事はこちらに移動しました。'
+
+  # Exciteブログは記事1件に付き、カテゴリを1つしか選べないことをあとで知った。
+  # わざわざacts-as-taggable-onを使うまでもなかった。。。
   acts_as_taggable
 
   validates :title, :content, :posted_at, :excite_id, presence: true

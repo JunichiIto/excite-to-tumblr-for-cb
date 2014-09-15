@@ -1,3 +1,4 @@
+# ブログ記事とブログ画像がmany to manyの関係になっているんじゃないかと思ったが、実際はすべてone to manyだった。。。
 class PostAndImage < ActiveRecord::Base
   belongs_to :blog_post
   belongs_to :blog_image
