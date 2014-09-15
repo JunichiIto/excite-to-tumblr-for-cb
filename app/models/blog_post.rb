@@ -140,7 +140,7 @@ class BlogPost < ActiveRecord::Base
   end
 
   def date_param_for_tumblr
-    I18n.l posted_at, format: '%Y-%m-%d'
+    I18n.l posted_at, format: '%Y-%m-%d %H:%M:%S'
   end
 
   def tumblr_client
