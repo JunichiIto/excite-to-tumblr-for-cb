@@ -32,6 +32,7 @@ class BlogPost < ActiveRecord::Base
     self.where(tumblr_id: nil).order(:posted_at).limit(limit).each do |blog_post|
       blog_post.post_to_tumblr(excite_blog_writer)
     end
+    BlogImage.update_all_tumblr_blog_urls
   end
 
   # 最初のバージョンではTumblr投稿時の日付情報が0:00固定になっていたので、このメソッドで修正する
