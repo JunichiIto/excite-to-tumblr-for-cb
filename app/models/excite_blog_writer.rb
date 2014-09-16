@@ -46,7 +46,6 @@ class ExciteBlogWriter
     input.clear
     input.send_keys content
 
-    # moreを取得
     more_content = clear_more(excite_id, submit: false)
 
     submit_edit_form
@@ -62,25 +61,23 @@ class ExciteBlogWriter
     browser.get edit_url(excite_id)
     sleep 4 # 日付のselect boxが選択されるのを待つ
 
-    # Moreがチェックされているか？
     checkbox = wait.until {
       element = browser.find_element(:name, "moreflag")
       element if element.displayed?
     }
+
     if checkbox.selected?
-      # 中身を取得
-      # テキストボックスをクリア
       input = wait.until {
         element = browser.find_element(:name, "morecontent")
         element if element.displayed?
       }
       old_content = input.text
       input.clear
-      # チェックボックスを外す
+
       checkbox.click
-      # submit
+
       submit_edit_form if submit
-      # 中身を返す
+
       old_content
     else
       info 'More not found.'

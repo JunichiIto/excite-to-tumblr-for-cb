@@ -46,6 +46,16 @@ class BlogPost < ActiveRecord::Base
     end
   end
 
+  # 最初のバージョンでは「続きを読む(More)」の内容をクリアしていなかったので、このメソッドで修正する
+  # 現在のバージョンではこのメソッドを呼び出す必要はない
+  def self.clear_all_more_content
+    excite_blog_writer = ExciteBlogWriter.new
+    excite_blog_writer.login
+    self.where.not(tumblr_id: nil).each do |blog_post|
+      blog_post.clear_more(excite_blog_writer)
+    end
+  end
+
   def post_to_tumblr(excite_blog_writer)
     logger.info "[INFO] Posting #{id} / #{excite_url}"
 
@@ -67,6 +77,17 @@ class BlogPost < ActiveRecord::Base
 
     # 問題があれば停止して手動で復旧させる
     assert_excite_is_updated
+  end
+
+  def clear_more(excite_blog_writer)
+    logger.info "[INFO] Clearing more #{id} / #{excite_url}"
+
+    more_content = excite_blog_writer.clear_more(excite_id, submit: true)
+    if more_content.present?
+      self.content_in_excite += "\n\n#{more_content}"
+      self.save!
+      logger.info "[INFO] Cleared more."
+    end
   end
 
   def fix_tumblr_post_date
