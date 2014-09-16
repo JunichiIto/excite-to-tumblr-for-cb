@@ -5,6 +5,9 @@ class BlogPost < ActiveRecord::Base
   BLOG_NAME = Settings.tumblr.blog_name
   MIGRATION_MESSAGE = 'この記事はこちらに移動しました。'
 
+  has_many :post_and_images
+  has_many :blog_images, through: :post_and_images
+
   # Exciteブログは記事1件に付き、カテゴリを1つしか選べないことをあとで知った。
   # わざわざacts-as-taggable-onを使うまでもなかった。。。
   acts_as_taggable
@@ -31,8 +34,8 @@ class BlogPost < ActiveRecord::Base
     excite_blog_writer.login
     self.where(tumblr_id: nil).order(:posted_at).limit(limit).each do |blog_post|
       blog_post.post_to_tumblr(excite_blog_writer)
+      blog_post.blog_images.each(&:update_tumblr_blog_url)
     end
-    BlogImage.update_all_tumblr_blog_urls
   end
 
   # 最初のバージョンではTumblr投稿時の日付情報が0:00固定になっていたので、このメソッドで修正する

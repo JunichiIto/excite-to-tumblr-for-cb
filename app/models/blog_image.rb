@@ -48,7 +48,8 @@ class BlogImage < ActiveRecord::Base
   end
 
   # 画像やキャプションをクリックした際に、ブログページへ遷移させる。
-  # ただし必須ではない。
+  # 最初のバージョンではこの情報を付けていなかったので、一括で付与するために作った。
+  # 現在のバージョンでは基本的に不要。
   def self.update_all_tumblr_blog_urls(limit: nil)
     self.includes(:blog_posts).references(:blog_posts).where.not(blog_posts: { tumblr_id: nil }).order(:excite_url).limit(limit).each do |blog_image|
       blog_image.update_tumblr_blog_url unless blog_image.already_link_updated?
