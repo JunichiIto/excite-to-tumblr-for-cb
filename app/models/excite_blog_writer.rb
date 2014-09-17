@@ -46,7 +46,7 @@ class ExciteBlogWriter
     input.clear
     input.send_keys content
 
-    more_content = clear_more(excite_id, submit: false)
+    more_content = clear_more(excite_id, submit: false, open_page: false)
 
     submit_edit_form
 
@@ -55,11 +55,13 @@ class ExciteBlogWriter
     old_content
   end
 
-  def clear_more(excite_id, submit: false)
+  def clear_more(excite_id, submit: false, open_page: true)
     info "Clear more for #{excite_id}"
 
-    browser.get edit_url(excite_id)
-    sleep 4 # 日付のselect boxが選択されるのを待つ
+    if open_page
+      browser.get edit_url(excite_id)
+      sleep 4 # 日付のselect boxが選択されるのを待つ
+    end
 
     checkbox = wait.until {
       element = browser.find_element(:name, "moreflag")
